@@ -1,0 +1,115 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* Global Styles */
+
+:root {
+    --primary-color: #8C0000;
+    --dark-color: #343a40;
+    --light-color: #f4f4f4;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --background-color: #232323;
+    text-align: center;
+
+}
+li.country{
+    color:  black;
+}
+@media only screen and (max-width:  600px) {
+.table-dark td, .table-dark th, .table-dark thead th{
+    font-size:  .5rem;
+}
+
+
+}
+@media only screen and (min-width:  700px) {
+.table-dark td, .table-dark th, .table-dark thead th{
+    font-size:  1.5rem;
+}
+
+
+}
+#delete-text {
+    color:  var(--primary-color);
+}
+
+#delete-text:hover{
+    color:  grey;
+}
+
+
+.color-nav {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.navbar-light .navbar-brand {
+    color: white;
+}
+
+#basic-navbar-nav>div>a {
+    color: white;
+}
+
+#basic-nav-dropdown {
+    color: white;
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#team-members,
+#cover {
+    /* font-family: 'Raleway', sans-serif;*/
+    font-family: 'Oswald',
+        sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: white;
+    text-align: center;
+    max-width: 100%;
+    overflow-x: hidden;
+    height: 100%;
+
+}
+
+
+
+.card-body {
+    background-color: var(--background-color);
+
+}
+
+.card-header {
+    background-color: var(--primary-color);
+}
+
+.card {
+    background-color: none;
+}
+
+#card-details,
+#expiration,
+#cvc {
+    background-color: white;
+    width: 200px;
+    height: 20px;
+
+
+}
