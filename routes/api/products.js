@@ -19,18 +19,19 @@ router.get("/", async (req, res) => {
 //@access Public
 router.post("/dispense", async (req, res) => {
   try {
-    console.log("I am here");
-    const productId = req.body.productID;
-    const product = await Product.findById(productId); // Fetch the product
+    const productID = req.body.productID;
+    const product = await Product.findById(productID); // Fetch the product
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
     if (product.quantity === 0) {
       return res.status(400).json({ message: "Product out of stock" });
     }
+
     product.quantity--; // Decrement the quantity
 
     await product.save(); // Save the product
+    console.log("I am here4");
     res.json(product); // Send the updated product as a response
   } catch (err) {
     res.status(500).json({ message: "Server error" });

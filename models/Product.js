@@ -3,9 +3,11 @@ const { Schema, model } = require("mongoose");
 const ProductSchema = new Schema({
   name: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
+    required: true,
   },
   priceCents: {
     type: Number,
@@ -14,14 +16,69 @@ const ProductSchema = new Schema({
   },
   quantity: {
     type: Number,
-    // set max quantity to 100
+    required: true,
     max: 100,
     min: 0,
   },
+
+  //totalSales, totalStocked, and totalDispensed are reactive properties
+  // Do not set these manually
+  totalSales: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  totalStocked: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  totalDispensed: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  // End reactive properties
+
   lastUpdatedBy: {
     type: Schema.Types.ObjectId,
     ref: "Admin",
   },
+});
+
+ProductSchema.post("init", function () {
+  this._initialState = this.toObject();
+});
+
+ProductSchema.pre("save", function setStockedAndDispensed(next) {
+  if (this.isNew) {
+    this.totalStocked = this.quantity;
+  }
+
+  if (!this.isNew && this.isModified("quantity")) {
+    const oldValue = this._initialState
+      ? this._initialState.quantity
+      : this.quantity;
+    const newValue = this.quantity;
+
+    const difference = Math.abs(oldValue - newValue);
+
+    if (oldValue < newValue) {
+      this.totalStocked += difference;
+    } else if (oldValue > newValue) {
+      this.totalDispensed += difference;
+    }
+  }
+  console.log("validate totalStocked");
+  next();
+});
+
+ProductSchema.pre("save", function setTotalSales(next) {
+  if (this.isModified("totalDispensed")) {
+    this.totalSales += this.priceCents;
+  }
+  console.log("Validate totalSales");
+  next();
 });
 
 const Product = model("Product", ProductSchema);

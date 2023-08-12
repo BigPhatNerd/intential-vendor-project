@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
 import axios from "axios";
+import { priceCentsToDollars } from "../../utils/helpers";
 
 const Landing = () => {
   const registrationContext = useContext(RegistrationContext);
@@ -18,8 +19,7 @@ const Landing = () => {
   }, []);
 
   const handleLogoutClick = () => {
-    logout(); // Calling the logout function from your context
-    // You can add more actions here if needed after logging out, like redirecting the user
+    logout();
   };
 
   return (
@@ -30,7 +30,7 @@ const Landing = () => {
           <div key={product._id} className="product-item">
             <h2>{product.name}</h2>
             <p>{product.description}</p>
-            <p>Cost: ${product.priceCents.toFixed(2)}</p>
+            <p>Cost: ${priceCentsToDollars(product.priceCents)}</p>
             <p>Quantity: {product.quantity}</p>
             <button onClick={() => dispenseProduct(product._id)}>
               Dispense
