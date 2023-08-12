@@ -69,29 +69,28 @@ const Admin = () => {
     }
   };
 
+  const handleReset = (index, product) => {
+    // Reset the ref input fields to their original values
+    productRefs.current[index].value = priceCentsToDollars(product.priceCents);
+    quantityRefs.current[index].value = product.quantity;
+
+    // Clear any updates for this product
+    const newUpdates = { ...updates };
+    delete newUpdates[product._id];
+    setUpdates(newUpdates);
+  };
+
   const handleLogoutClick = () => {
     logout(); // Calling the logout function from your context
     // You can add more actions here if needed after logging out, like redirecting the user
   };
 
-  const getRefForProduct = (id, refArray) => {
-    if (!refArray.current[id]) {
-      refArray.current[id] = React.createRef();
-    }
-    return refArray.current[id];
-  };
-
   const productRefs = useRef([]);
+  const quantityRefs = useRef([]);
 
   if (!admin.isAuthenticated) {
     return <Redirect to="/" />;
   }
-
-  // products.forEach((product, index) => {
-  //   if (!productRefs.current[index]) {
-  //     productRefs.current[index] = React.createRef();
-  //   }
-  // });
 
   return (
     <>
@@ -131,6 +130,7 @@ const Admin = () => {
                 min={product.quantity}
                 max="100"
                 defaultValue={product.quantity}
+                ref={(input) => (quantityRefs.current[index] = input)}
                 onChange={(e) =>
                   handleChange(
                     product._id,
@@ -141,7 +141,14 @@ const Admin = () => {
               />
             </div>
             {updates[product._id] && (
-              <button onClick={() => handleUpdate(product._id)}>Update</button>
+              <>
+                <button onClick={() => handleUpdate(product._id)}>
+                  Update
+                </button>
+                <button onClick={() => handleReset(index, product)}>
+                  Reset
+                </button>
+              </>
             )}
           </div>
         ))}
