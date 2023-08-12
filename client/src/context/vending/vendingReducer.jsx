@@ -17,7 +17,9 @@ const VendingReducer = (state, action) => {
     case REFILL_MACHINE:
       return {
         ...state,
-        products: action.payload,
+        products: state.products.map((product) =>
+          product._id === action.payload._id ? action.payload : product
+        ),
       };
     default:
       return state;

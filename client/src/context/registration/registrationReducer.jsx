@@ -85,6 +85,7 @@ const RegistrationReducer = (state, action) => {
           ...state.admin,
           isAuthenticated: true,
           email: action.payload?.email,
+          id: action.payload?._id,
         },
       };
 

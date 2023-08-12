@@ -1,55 +1,148 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link, Redirect } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
+import { priceCentsToDollars } from "../../utils/helpers";
 
 const Admin = () => {
   const registrationContext = useContext(RegistrationContext);
-  const { admin, logout } = registrationContext;
+  const { admin, logout, setAlert } = registrationContext;
   const vendingContext = useContext(VendingContext);
   const { products, updateProduct } = vendingContext;
   console.log({ registrationContext, vendingContext });
 
-  const handleUpdate = (id, updatedProduct) => {
-    updateProduct(id, updatedProduct);
+  const [updates, setUpdates] = useState({});
+
+  const handleChange = (id, key, value, ref) => {
+    const product = products.find((p) => p._id === id);
+    if (key === "quantity" && value === product.quantity) {
+      const newUpdates = { ...updates };
+      delete newUpdates[id];
+      setUpdates(newUpdates);
+      return;
+    }
+    if (key === "priceCents" && value === product.priceCents) {
+      const newUpdates = { ...updates };
+      delete newUpdates[id];
+      setUpdates(newUpdates);
+      return;
+    }
+    if (key === "quantity") {
+      if (value <= product.quantity) {
+        value = product.quantity;
+        setAlert("Cannot remove items from machine", "danger");
+        return;
+      }
+      if (value > 100) {
+        value = 100;
+        setAlert("Maximum qty is 100", "danger");
+        return;
+      }
+    }
+
+    if (key === "priceCents" && ref) {
+      ref.value = priceCentsToDollars(value);
+    }
+
+    const productUpdates = updates[id] || {};
+    productUpdates[key] = value;
+    setUpdates({
+      ...updates,
+      [id]: productUpdates,
+    });
+  };
+
+  const handleUpdate = (id) => {
+    if (updates[id]) {
+      const updatedProductInfo = {
+        id: id,
+        ...updates[id],
+      };
+      updateProduct(updatedProductInfo, admin.id);
+
+      // Optionally, clear the updates for this product after successful update
+      const newUpdates = { ...updates };
+      delete newUpdates[id];
+      setUpdates(newUpdates);
+      // I need to set alert for successful update
+      // Set alert for errors
+    }
   };
 
   const handleLogoutClick = () => {
     logout(); // Calling the logout function from your context
     // You can add more actions here if needed after logging out, like redirecting the user
   };
+
+  const getRefForProduct = (id, refArray) => {
+    if (!refArray.current[id]) {
+      refArray.current[id] = React.createRef();
+    }
+    return refArray.current[id];
+  };
+
+  const productRefs = useRef([]);
+
   if (!admin.isAuthenticated) {
     return <Redirect to="/" />;
   }
+
+  // products.forEach((product, index) => {
+  //   if (!productRefs.current[index]) {
+  //     productRefs.current[index] = React.createRef();
+  //   }
+  // });
+
   return (
     <>
       <h2>Admin Dashboard</h2>
       <div className="products-list">
-        {products.map((product) => (
+        {products.map((product, index) => (
           <div key={product._id} className="product-item">
             <h2>{product.name}</h2>
-            <label>
-              Price ($):
+            {/* Display last updated by email */}
+            {product.lastUpdatedBy && product.lastUpdatedBy.email ? (
+              <div className="updated-by">
+                <span>Last updated by: {product.lastUpdatedBy.email}</span>
+              </div>
+            ) : null}
+            <div>
+              <label>Price ($):</label>
               <input
                 type="number"
-                value={product.priceCents / 100}
+                step="0.01"
+                ref={(input) => (productRefs.current[index] = input)}
+                defaultValue={priceCentsToDollars(product.priceCents)}
                 onChange={(e) =>
-                  handleUpdate(product._id, {
-                    priceCents: e.target.value * 100,
-                  })
+                  handleChange(
+                    product._id,
+                    "priceCents",
+                    parseFloat(e.target.value) * 100,
+                    productRefs.current[index]
+                  )
                 }
               />
-            </label>
-            <label>
-              Quantity:
+            </div>
+            <div>
+              <label>Quantity:</label>
               <input
                 type="number"
-                value={product.quantity}
+                step="1"
+                min={product.quantity}
+                max="100"
+                defaultValue={product.quantity}
                 onChange={(e) =>
-                  handleUpdate(product._id, { quantity: e.target.value })
+                  handleChange(
+                    product._id,
+                    "quantity",
+                    parseInt(e.target.value, 10)
+                  )
                 }
               />
-            </label>
+            </div>
+            {updates[product._id] && (
+              <button onClick={() => handleUpdate(product._id)}>Update</button>
+            )}
           </div>
         ))}
       </div>

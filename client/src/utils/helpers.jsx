@@ -1,3 +1,3 @@
 export const priceCentsToDollars = (priceCents) => {
-  return (priceCents / 10000).toFixed(2);
+  return (priceCents / 100).toFixed(2);
 };

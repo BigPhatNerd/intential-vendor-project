@@ -43,10 +43,15 @@ const VendingState = (props) => {
     }
   };
 
-  // Refill machine with multiple products
-  const refillMachine = async (products) => {
+  // Refill machine one product at a time
+  const updateProduct = async (product, adminID) => {
     try {
-      const res = await axios.post("/api/products", products);
+      console.log({ product });
+      const requestBody = {
+        ...product,
+        adminID,
+      };
+      const res = await axios.put("/api/products", requestBody);
       console.log("res.data: ", res.data);
       dispatch({
         type: REFILL_MACHINE,
@@ -65,7 +70,7 @@ const VendingState = (props) => {
         error: state.error,
         getProducts,
         dispenseProduct,
-        refillMachine,
+        updateProduct,
       }}
     >
       {props.children}
