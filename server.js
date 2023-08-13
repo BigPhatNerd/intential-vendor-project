@@ -24,7 +24,7 @@ app.use(express.json({ extended: false }));
 app.use("/api/admins", admins);
 app.use("/api/auth", auth);
 app.use("/api/products", products);
-app.use("/api/stripe", stripe);
+app.use("/stripe", stripe);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

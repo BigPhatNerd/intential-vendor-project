@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
 import axios from "axios";
+import PaymentForm from "../PaymentForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { priceCentsToDollars } from "../../utils/helpers";
 
+const stripePromise = loadStripe("pk_test_1IDxMXH0bopzjQn32aX3c9tH00ypXzcSHu");
+
 const Landing = () => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const registrationContext = useContext(RegistrationContext);
   const vendingContext = useContext(VendingContext);
   const { loadAdmin, admin, logout } = registrationContext;
@@ -22,6 +29,11 @@ const Landing = () => {
     logout();
   };
 
+  const handleDispenseClick = (product) => {
+    setSelectedProduct(product);
+    setIsPaymentModalOpen(true);
+  };
+
   return (
     <div>
       <div>Landing</div>
@@ -32,12 +44,26 @@ const Landing = () => {
             <p>{product.description}</p>
             <p>Cost: ${priceCentsToDollars(product.priceCents)}</p>
             <p>Quantity: {product.quantity}</p>
-            <button onClick={() => dispenseProduct(product._id)}>
+            {/* <button onClick={() => dispenseProduct(product._id)}> */}
+            <button onClick={() => handleDispenseClick(product)}>
               Dispense
             </button>
           </div>
         ))}
       </div>
+
+      {/* Stripe Payment Modal */}
+      {isPaymentModalOpen && (
+        <Elements stripe={stripePromise}>
+          <PaymentForm
+            onPayment={() => {
+              setIsPaymentModalOpen(false);
+              // Handle product dispensing logic if needed
+            }}
+            onCancel={() => setIsPaymentModalOpen(false)}
+          />
+        </Elements>
+      )}
 
       {!admin.isAuthenticated && (
         <Link to="/login" className="btn btn-primary">
