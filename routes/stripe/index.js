@@ -11,9 +11,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-//@route POST stripe/charge
-//@desc charge stripe for product
-//@access Public
 router.post("/charge", async (req, res) => {
   try {
     const { amount, source, email } = req.body;

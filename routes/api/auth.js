@@ -62,8 +62,6 @@ router.post("/", adminValidations, async (req, res) => {
 });
 
 router.post("/reset-password-initiate", async (req, res) => {
-  console.log("HERE");
-  console.log({ body: req.body });
   const user = await Admin.findOne({ email: req.body.email });
   if (!user) return res.status(404).send("User not found.");
 

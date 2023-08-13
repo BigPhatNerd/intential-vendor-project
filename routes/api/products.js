@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 router.post("/dispense", async (req, res) => {
   try {
     const productID = req.body.productID;
-    const product = await Product.findById(productID); // Fetch the product
+    const product = await Product.findById(productID);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -24,11 +24,11 @@ router.post("/dispense", async (req, res) => {
       return res.status(400).json({ message: "Product out of stock" });
     }
 
-    product.quantity--; // Decrement the quantity
+    product.quantity--;
 
-    await product.save(); // Save the product
-    console.log("I am here4");
-    res.json(product); // Send the updated product as a response
+    await product.save();
+
+    res.json(product);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -68,6 +68,22 @@ router.put("/", auth, async (req, res) => {
     console.log({ err });
     res.status(500).json({ message: "Server error" });
   }
+});
+
+router.get("/download-json/:id", async (req, res) => {
+  const productID = req.params.id;
+  const product = await Product.findById(productID);
+  const productData = {
+    name: product.name,
+    description: product.description,
+    price: `$${(product.priceCents / 100).toFixed(2)}`,
+  };
+
+  const jsonData = JSON.stringify(productData);
+
+  res.setHeader("Content-disposition", "attachment; filename=soda.json");
+  res.setHeader("Content-type", "application/json");
+  res.send(jsonData);
 });
 
 module.exports = router;

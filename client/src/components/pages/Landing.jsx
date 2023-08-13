@@ -35,8 +35,27 @@ const Landing = () => {
     setIsPaymentModalOpen(true);
   };
 
-  const handleSuccessfulPayment = () => {
+  const handleSuccessfulPayment = async () => {
     console.log("PAYMENT SUCCESSFUL and handleSuccessfulPayment hit");
+    try {
+      console.log({ selectedProduct });
+      const response = await axios.get(
+        `/api/products/download-json/${selectedProduct._id}`,
+        {
+          responseType: "blob", // Important: tells Axios to expect a Blob object as response
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "soda.json"); // or any other name you want
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
     dispenseProduct(selectedProduct._id);
     setIsPaymentModalOpen(false);
     setSelectedProduct(null);
