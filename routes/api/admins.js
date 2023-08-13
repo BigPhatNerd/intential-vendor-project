@@ -6,16 +6,10 @@ const { Admin } = require("../../models");
 const { check, validationResult } = require("express-validator");
 const { adminValidations } = require("../validationHelpers");
 
-//@route GET api/admins
-//@desc Test route
-//@access Public
 router.get("/", (req, res) => {
   res.send("Admin route");
 });
 
-//@route POST api/admins
-//@desc Register route
-//@access Public
 router.post("/", adminValidations, async (req, res) => {
   const errors = validationResult(req);
   console.log({ errors });

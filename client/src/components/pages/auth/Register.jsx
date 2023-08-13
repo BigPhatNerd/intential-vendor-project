@@ -101,6 +101,11 @@ const Register = () => {
               Don’t have an account?&nbsp; <Link to="/">Return to home</Link>
             </p>
           </Row>
+          <Row className="ml-2 mt-2">
+            <Button variant="primary" as={Link} to="/">
+              Return to vending
+            </Button>
+          </Row>
         </Col>
       </Container>
     </div>

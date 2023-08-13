@@ -83,6 +83,17 @@ const Login = () => {
             <Link to="/register">Register here</Link>
           </p>
         </Row>
+        <Row className="ml-2 mt-2">
+          <p style={styles.p}>
+            Forgot password?&nbsp;{" "}
+            <Link to="/reset-password-initiate">Reset password</Link>
+          </p>
+        </Row>
+        <Row className="ml-2 mt-2">
+          <Button variant="primary" as={Link} to="/">
+            Return to vending
+          </Button>
+        </Row>
       </Container>
     </div>
   );

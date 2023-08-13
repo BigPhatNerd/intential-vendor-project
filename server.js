@@ -25,6 +25,7 @@ app.use("/api/admins", admins);
 app.use("/api/auth", auth);
 app.use("/api/products", products);
 app.use("/stripe", stripe);
+console.log({ stripe });
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

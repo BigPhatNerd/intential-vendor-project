@@ -4,21 +4,15 @@ const Product = require("../../models/Product");
 const Admin = require("../../models/Admin");
 const auth = require("../../middleware/auth");
 
-//@route GET api/products
-//@desc get all products route
-//@access Public
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find().populate("lastUpdatedBy", "email"); // Fetch all products
-    res.json(products); // Send the products as a response
+    res.json(products);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 });
 
-//@route POST api/products/dispense
-//@desc decrement product quantity route
-//@access Public
 router.post("/dispense", async (req, res) => {
   try {
     const productID = req.body.productID;
@@ -40,11 +34,7 @@ router.post("/dispense", async (req, res) => {
   }
 });
 
-//@route PUT api/products
-//@desc restock individual product route
-//@access Private
 router.put("/", auth, async (req, res) => {
-  console.log("I am here");
   const { id, quantity, priceCents, adminID } = req.body;
 
   try {

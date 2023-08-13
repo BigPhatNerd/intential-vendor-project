@@ -7,6 +7,7 @@ import PaymentForm from "../PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { priceCentsToDollars } from "../../utils/helpers";
+import "./Landing.css";
 
 const stripePromise = loadStripe("pk_test_1IDxMXH0bopzjQn32aX3c9tH00ypXzcSHu");
 
@@ -34,6 +35,14 @@ const Landing = () => {
     setIsPaymentModalOpen(true);
   };
 
+  const handleSuccessfulPayment = () => {
+    console.log("PAYMENT SUCCESSFUL and handleSuccessfulPayment hit");
+    dispenseProduct(selectedProduct._id);
+    setIsPaymentModalOpen(false);
+    setSelectedProduct(null);
+    // maybe show some alert or notification to user
+  };
+
   return (
     <div>
       <div>Landing</div>
@@ -54,15 +63,17 @@ const Landing = () => {
 
       {/* Stripe Payment Modal */}
       {isPaymentModalOpen && (
-        <Elements stripe={stripePromise}>
-          <PaymentForm
-            onPayment={() => {
-              setIsPaymentModalOpen(false);
-              // Handle product dispensing logic if needed
-            }}
-            onCancel={() => setIsPaymentModalOpen(false)}
-          />
-        </Elements>
+        <div className="modal-overlay">
+          <div className="payment-modal">
+            <Elements stripe={stripePromise}>
+              <PaymentForm
+                amount={selectedProduct.priceCents}
+                onPayment={handleSuccessfulPayment}
+                onCancel={() => setIsPaymentModalOpen(false)}
+              />
+            </Elements>
+          </div>
+        </div>
       )}
 
       {!admin.isAuthenticated && (

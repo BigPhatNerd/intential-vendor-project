@@ -10,6 +10,12 @@ const AdminSchema = new Schema({
     type: String,
     required: true,
   },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
 });
 
 const Admin = model("Admin", AdminSchema);
