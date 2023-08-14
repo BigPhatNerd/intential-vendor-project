@@ -6,7 +6,7 @@ const auth = require("../../middleware/auth");
 
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find().populate("lastUpdatedBy", "email"); // Fetch all products
+    const products = await Product.find().populate("lastUpdatedBy", "email");
     res.json(products);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

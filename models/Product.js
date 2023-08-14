@@ -17,8 +17,23 @@ const ProductSchema = new Schema({
   quantity: {
     type: Number,
     required: true,
-    max: 100,
     min: 0,
+    validate: {
+      validator: function (v) {
+        if (this.name === "Fizz" || this.name === "Pop") {
+          return v <= 100;
+        }
+        if (this.name === "Cola") {
+          return v <= 200;
+        }
+        if (this.name === "Mega Pop") {
+          return v <= 50;
+        }
+        return true;
+      },
+      message: (props) =>
+        `${props.value} exceeds tha max quantity for ${props.name}`,
+    },
   },
 
   //totalSales, totalStocked, and totalDispensed are reactive properties

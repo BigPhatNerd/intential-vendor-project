@@ -25,28 +25,45 @@ const Admin = () => {
   const handleChange = (id, key, value, ref) => {
     const product = products.find((p) => p._id === id);
     if (key === "quantity" && value === product.quantity) {
+      console.log("MAYBE I SHOULD MOVE");
       const newUpdates = { ...updates };
       delete newUpdates[id];
       setUpdates(newUpdates);
       return;
     }
-    console.log({ key, value, priceCents: product.priceCents });
+    console.log({ ref, key });
     if (key === "priceCents" && value === product.priceCents) {
+      console.log("Why am I here");
       const newUpdates = { ...updates };
       delete newUpdates[id];
       setUpdates(newUpdates);
       return;
     }
     if (key === "quantity") {
-      if (value <= product.quantity) {
-        value = product.quantity;
-        console.log({ value, ref: ref });
-        setAlert("Cannot remove items from machine", "danger");
+      const productMax = {
+        Fizz: 100,
+        Pop: 100,
+        Cola: 200,
+        "Mega Pop": 50,
+      };
+
+      console.log("HERE");
+      console.log(product.name, value, productMax[product.name]);
+
+      if (productMax[product.name] && value > productMax[product.name]) {
+        value = productMax[product.name];
+        ref.value = product.quantity;
+        setAlert(
+          `Maximum qty for ${product.name} is ${productMax[product.name]}`,
+          "success"
+        );
         return;
       }
-      if (value > 100) {
-        value = 100;
-        setAlert("Maximum qty is 100", "danger");
+
+      if (value <= product.quantity) {
+        value = product.quantity;
+        ref.value = product.quantity;
+        setAlert("Cannot remove items from machine", "danger");
         return;
       }
     }
@@ -108,7 +125,7 @@ const Admin = () => {
       <Container>
         <Row className="justify-content-center">
           <Col xs={12}>
-            <h2>Admin Dashboard</h2>
+            <h2 className="mt-5">Admin Dashboard</h2>
             <h4>Max qty is 100 and inventory cannot be reduced</h4>
           </Col>
         </Row>
@@ -145,15 +162,16 @@ const Admin = () => {
                     <FormControl
                       type="number"
                       step="1"
-                      min={product.quantity}
-                      max="100"
+                      // min={product.quantity}
+                      // max="100"
                       defaultValue={product.quantity}
                       ref={(input) => (quantityRefs.current[index] = input)}
                       onChange={(e) =>
                         handleChange(
                           product._id,
                           "quantity",
-                          parseInt(e.target.value, 10)
+                          parseInt(e.target.value, 10),
+                          quantityRefs.current[index]
                         )
                       }
                       onKeyDown={(e) => e.preventDefault()}
