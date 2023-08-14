@@ -15,6 +15,7 @@
    - [User Interface](#user-interface)
    - [Admin Interface](#admin-interface)
 6. [Technologies Used](#technologies-used)
+7. [Photo Gallery](#photo-gallery)
 
 ---
 
@@ -176,4 +177,13 @@ Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It ma
 
 - [Mongoose Documentation](https://mongoosejs.com/)
 
+
+## Photo Gallery
+
+
+![Screenshot 2023-08-14 at 7 47 09 AM](https://github.com/BigPhatNerd/intential-vendor-project/assets/44242436/d7766d65-8d1d-4378-b69e-d674f6cc0c1d)
+
+![Screenshot 2023-08-14 at 7 47 26 AM](https://github.com/BigPhatNerd/intential-vendor-project/assets/44242436/9cdef677-c42a-4c3c-ae57-bbd2cd69c8b1)
+
+![Screenshot 2023-08-14 at 7 48 11 AM](https://github.com/BigPhatNerd/intential-vendor-project/assets/44242436/4229c9cd-341f-43d3-a911-11facff6c052)
 
