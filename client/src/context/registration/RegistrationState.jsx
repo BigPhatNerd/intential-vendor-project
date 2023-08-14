@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 
 import RegistrationContext from "./registrationContext";
 import RegistrationReducer from "./registrationReducer";
@@ -20,7 +20,6 @@ import {
   LOGOUT,
   PASSWORD_RESET_INITIATE,
   PASSWORD_RESET_SUCCESS,
-  PASSWORD_RESET_FAIL,
 } from "./types";
 
 import setAuthToken from "../../utils/setAuthToken";
@@ -37,21 +36,19 @@ const RegistrationState = (props) => {
 
   const [state, dispatch] = useReducer(RegistrationReducer, initialState);
 
-  //Load admin
   const loadAdmin = async () => {
-    console.log("loadAdmin fired");
     if (localStorage.token) {
       setAuthToken(localStorage.token);
 
       try {
         const res = await axios.get("/api/auth");
-        console.log("res.data: ", res.data);
         dispatch({
           type: ADMIN_LOADED,
           payload: res.data,
         });
       } catch (err) {
-        console.log({ err });
+        const errorMsg = err.response.data;
+        setAlert(errorMsg, "danger");
 
         dispatch({
           type: AUTH_ERROR,
@@ -59,16 +56,10 @@ const RegistrationState = (props) => {
       }
     }
   };
-  //login admin
+
   const login = async (email, password) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const body = JSON.stringify({ email, password });
     try {
-      const res = await axios.post("/api/auth", body, config);
+      const res = await axios.post("/api/auth", { email, password });
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -76,7 +67,10 @@ const RegistrationState = (props) => {
       });
       loadAdmin();
     } catch (err) {
-      console.log({ err });
+      if (!err.response.data.errors) {
+        const errorMsg = err.response.data;
+        setAlert(errorMsg, "danger");
+      }
       const errors = err.response.data.errors;
       if (errors) {
         errors.forEach((error) => {
@@ -89,7 +83,6 @@ const RegistrationState = (props) => {
     }
   };
 
-  //logout admin
   const logout = () => {
     dispatch({ type: LOGOUT });
     window.location.reload(false);
@@ -97,7 +90,7 @@ const RegistrationState = (props) => {
 
   const setAlert = (msg, type) => {
     const id = uuid();
-    console.log({ id });
+
     dispatch({
       type: SET_ALERT,
       payload: { msg, type, id },
@@ -105,7 +98,6 @@ const RegistrationState = (props) => {
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), 5000);
   };
 
-  //Set the product to be put into Stripe
   const setProduct = (product) => {
     dispatch({
       type: SET_SELECTED_PRODUCT,
@@ -120,24 +112,20 @@ const RegistrationState = (props) => {
     });
   };
 
-  //Register user
   const register = async ({ email, password }) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const body = { email, password };
-
     try {
       setLoading(true);
-      const res = await axios.post("/api/admins", body, config);
+      const res = await axios.post("/api/admins", { email, password });
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
     } catch (err) {
+      if (!err.response.data.errors) {
+        const errorMsg = err.response.data;
+        setAlert(errorMsg, "danger");
+      }
       const errors = err.response.data.errors;
       if (errors) {
         errors.forEach((error) => {
@@ -151,9 +139,7 @@ const RegistrationState = (props) => {
     }
   };
 
-  //Set Loading
   const setLoading = (trueOrFalse) => {
-    console.log("Inside setLoading");
     dispatch({
       type: SET_LOADING,
       payload: trueOrFalse,
@@ -169,12 +155,8 @@ const RegistrationState = (props) => {
 
       setAlert(response.data || response.data.message);
     } catch (error) {
-      const errors = error.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => {
-          setAlert(error.msg, "danger");
-        });
-      }
+      const errorMsg = error.response.data;
+      setAlert(errorMsg, "danger");
     }
   };
 
@@ -191,12 +173,8 @@ const RegistrationState = (props) => {
       });
       loadAdmin();
     } catch (error) {
-      const errors = error.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => {
-          setAlert(error.msg, "danger");
-        });
-      }
+      const errorMsg = error.response.data;
+      setAlert(errorMsg, "danger");
     }
   };
 

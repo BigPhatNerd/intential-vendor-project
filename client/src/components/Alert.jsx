@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import RegistrationContext from "../context/registration/registrationContext";
 
 const Alert = () => {
@@ -14,10 +14,16 @@ const Alert = () => {
         key={`alert-${i}`}
         style={{
           backgroundColor: "blue",
+          color: "white",
           position: "fixed",
           width: "100%",
           zIndex: 1,
-          height: "2rem",
+          height: "3rem",
+          fontSize: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 1rem",
         }}
       >
         {item.msg}

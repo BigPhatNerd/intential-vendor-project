@@ -65,7 +65,6 @@ router.put("/", auth, async (req, res) => {
     );
     res.json(populatedProduct);
   } catch (err) {
-    console.log({ err });
     res.status(500).json({ message: "Server error" });
   }
 });

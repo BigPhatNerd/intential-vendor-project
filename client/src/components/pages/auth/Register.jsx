@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Col, Button, Form, Row } from "react-bootstrap";
-import Spinner from "../../Spinner";
 import background from "../../../img/vending.jpg";
 import RegistrationContext from "../../../context/registration/registrationContext";
 
@@ -23,7 +22,7 @@ const Register = () => {
     },
   };
   const registrationContext = useContext(RegistrationContext);
-  const { admin, register, setAlert, setEmail, loading } = registrationContext;
+  const { admin, register, setAlert, setEmail } = registrationContext;
 
   const [formData, setFormData] = useState({
     email: "",
@@ -31,8 +30,6 @@ const Register = () => {
     password2: "",
   });
   const { email, password, password2 } = formData;
-  console.log("Register");
-  console.log({ registrationContext });
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -47,8 +44,9 @@ const Register = () => {
       register({ email, password });
     }
   };
-  console.log({ registrationContext });
+
   if (admin.isAuthenticated) return <Redirect to="/" />;
+
   return (
     <div id="cover" style={styles.container}>
       <Container>

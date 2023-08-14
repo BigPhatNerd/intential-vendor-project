@@ -1,6 +1,5 @@
 /* Admin.css */
 
-
 h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -16,17 +15,17 @@ h4 {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: space-between;
-    max-width: 1000px;  /* Assuming this width will be enough */
-    margin: 0 auto;     /* To center the product list */
+    max-width: 1000px; 
+    margin: 0 auto;    
 }
 
 .product-item {
-    flex: 1;             /* This allows the items to grow */
+    flex: 1;            
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     padding: 15px;
-    box-sizing: border-box; /* This ensures padding is included in width */
-    min-width: 450px;   /* Half of max-width minus gap; adjust if needed */
+    box-sizing: border-box; 
+    min-width: 450px;   
     display: flex;
     flex-direction: column;
     gap: 15px;

@@ -1,15 +1,13 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Container, Row, Button, Form } from "react-bootstrap";
 import background from "../../../img/vending.jpg";
 import RegistrationContext from "../../../context/registration/registrationContext";
 
 const ResetPassword = () => {
   const registrationContext = useContext(RegistrationContext);
-  const { admin, login, setAlert, handlePasswordReset } = registrationContext;
-  const history = useHistory();
+  const { admin, handlePasswordReset } = registrationContext;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -43,20 +41,6 @@ const ResetPassword = () => {
     }
 
     handlePasswordReset(token, password);
-    // try {
-    //   const response = await axios.post("/api/auth/reset-password", {
-    //     token,
-    //     password,
-    //   });
-    //   setMessage(response.data || response.data.message);
-    //   history.push("/admin");
-    // } catch (error) {
-    //   if (error.response) {
-    //     setMessage(error.response.data || error.response.data.message);
-    //   } else {
-    //     setMessage("An error occurred. Please try again later.");
-    //   }
-    // }
   };
 
   if (admin.didResetPassword) {

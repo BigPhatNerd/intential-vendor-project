@@ -1,16 +1,13 @@
-import React, { useState, useContext } from "react";
-import axios from "axios";
-import { Link, Redirect } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { Container, Row, Button, Form } from "react-bootstrap";
 import background from "../../../img/vending.jpg";
 import RegistrationContext from "../../../context/registration/registrationContext";
 
 const ResetPasswordInitiate = () => {
   const registrationContext = useContext(RegistrationContext);
-  const { admin, login, setAlert, handlePasswordResetInitiate } =
-    registrationContext;
+  const { handlePasswordResetInitiate } = registrationContext;
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
 
   const styles = {
     container: {
@@ -32,21 +29,6 @@ const ResetPasswordInitiate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     handlePasswordResetInitiate(email);
-    // console.log({ email });
-    // try {
-    //   const response = await axios.post("/api/auth/reset-password-initiate", {
-    //     email,
-    //   });
-    //   console.log({ response });
-    //   setMessage(response.data || response.data.message);
-    // } catch (error) {
-    //   console.log({ error });
-    //   if (error.response) {
-    //     setMessage(error.response.data || error.response.data.message);
-    //   } else {
-    //     setMessage("An error occurred. Please try again later.");
-    //   }
-    // }
   };
 
   return (
@@ -74,7 +56,7 @@ const ResetPasswordInitiate = () => {
         </Form>
 
         <Row className="ml-2 mt-2">
-          <p style={styles.p}>{message}</p>
+          <p style={styles.p}> </p>
         </Row>
 
         <Row className="ml-2 mt-2">

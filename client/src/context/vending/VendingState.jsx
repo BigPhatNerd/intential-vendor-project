@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 
 import VendingContext from "./vendingContext";
 import VendingReducer from "./vendingReducer";
@@ -15,11 +15,10 @@ const VendingState = (props) => {
 
   const [state, dispatch] = useReducer(VendingReducer, initialState);
 
-  // Get products
   const getProducts = async () => {
     try {
       const res = await axios.get("/api/products");
-      console.log("res.data: ", res.data);
+
       dispatch({
         type: GET_PRODUCTS,
         payload: res.data,
@@ -29,7 +28,6 @@ const VendingState = (props) => {
     }
   };
 
-  // Dispense product
   const dispenseProduct = async (productID) => {
     try {
       const res = await axios.post("/api/products/dispense", { productID });
@@ -52,7 +50,7 @@ const VendingState = (props) => {
         adminID,
       };
       const res = await axios.put("/api/products", requestBody);
-      console.log("res.data: ", res.data);
+
       dispatch({
         type: REFILL_MACHINE,
         payload: res.data,

@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
-import axios from "axios";
 import PaymentForm from "../PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -24,9 +23,8 @@ const Landing = () => {
   const registrationContext = useContext(RegistrationContext);
   const vendingContext = useContext(VendingContext);
   const { loadAdmin, admin, logout, setAlert } = registrationContext;
-  console.log({ vendingContext, registrationContext });
   const { getProducts, dispenseProduct, products } = vendingContext;
-  console.log({ products });
+
   useEffect(() => {
     loadAdmin();
     getProducts();
@@ -54,7 +52,6 @@ const Landing = () => {
   };
 
   const handleSuccessfulPayment = async () => {
-    console.log("PAYMENT SUCCESSFUL and handleSuccessfulPayment hit");
     playVendingSound();
     const success = await downloadFile(selectedProduct._id);
     if (success) {
@@ -89,7 +86,6 @@ const Landing = () => {
                   <p className="product-description">{product.description}</p>
                   <p>Cost: ${priceCentsToDollars(product.priceCents)}</p>
                   <p>Quantity: {product.quantity}</p>
-                  {/* Remove the button from here. */}
                 </div>
               ))}
             </div>
@@ -114,7 +110,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      {/* Stripe Payment Modal */}
+
       {isPaymentModalOpen && (
         <div className="modal-overlay">
           <div className="payment-modal">

@@ -1,22 +1,3 @@
-// name: {
-//     type: String,
-//   },
-//   description: {
-//     type: String,
-//   },
-//   priceCents: {
-//     type: Number,
-//   },
-//   quantity: {
-//     type: Number,
-//     // set max quantity to 100
-//     max: 100,
-//     min: 0,
-//   },
-//   lastUpdatedBy: {
-//     type: Schema.Types.ObjectId,
-//     ref: "Admin",
-//   },
 module.exports = [
   {
     name: "Fizz",

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import RegistrationContext from "../../../context/registration/registrationContext";
 import { Container, Row, Button, Form } from "react-bootstrap";
@@ -31,8 +31,7 @@ const Login = () => {
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  console.log("In Login");
-  console.log({ registrationContext });
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (email === "" || password === "") {
@@ -41,6 +40,7 @@ const Login = () => {
       login(email, password);
     }
   };
+
   if (admin.isAuthenticated) {
     return <Redirect to="/" />;
   }

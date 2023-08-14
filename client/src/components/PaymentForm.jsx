@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import RegistrationContext from "../context/registration/registrationContext";
 import axios from "axios";
@@ -12,7 +12,6 @@ const PaymentForm = ({ onPayment, onCancel, amount }) => {
   const [email, setEmail] = useState("");
 
   const handlePaymentSubmit = async (event) => {
-    console.log("handlePaymentSubmit");
     event.preventDefault();
 
     const cardElement = elements.getElement(CardElement);
@@ -27,22 +26,18 @@ const PaymentForm = ({ onPayment, onCancel, amount }) => {
       const response = await axios.post("/stripe/charge", {
         source: token.id,
         email,
-        amount, // and any other data you want to send
+        amount,
       });
 
       const data = response.data;
-      console.log({ data });
+
       if (data.charge && data.charge.status === "succeeded") {
-        console.log({ data });
         setAlert("Payment successful", "success");
         onPayment();
       } else {
-        // Handle error (you could set an error state here to show to the user)
-        console.log(data.message);
         setAlert(data.message, "danger");
       }
     } catch (error) {
-      console.error("Error processing payment:", error);
       setAlert(`Error processing payment: ${error}`, "danger");
     }
   };

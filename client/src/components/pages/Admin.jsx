@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import { useContext, useState, useRef } from "react";
 import { Link, Redirect } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
@@ -18,22 +18,19 @@ const Admin = () => {
   const { admin, logout, setAlert } = registrationContext;
   const vendingContext = useContext(VendingContext);
   const { products, updateProduct } = vendingContext;
-  console.log({ registrationContext, vendingContext });
-
   const [updates, setUpdates] = useState({});
-
+  const productRefs = useRef([]);
+  const quantityRefs = useRef([]);
   const handleChange = (id, key, value, ref) => {
     const product = products.find((p) => p._id === id);
     if (key === "quantity" && value === product.quantity) {
-      console.log("MAYBE I SHOULD MOVE");
       const newUpdates = { ...updates };
       delete newUpdates[id];
       setUpdates(newUpdates);
       return;
     }
-    console.log({ ref, key });
+
     if (key === "priceCents" && value === product.priceCents) {
-      console.log("Why am I here");
       const newUpdates = { ...updates };
       delete newUpdates[id];
       setUpdates(newUpdates);
@@ -46,9 +43,6 @@ const Admin = () => {
         Cola: 200,
         "Mega Pop": 50,
       };
-
-      console.log("HERE");
-      console.log(product.name, value, productMax[product.name]);
 
       if (productMax[product.name] && value > productMax[product.name]) {
         value = productMax[product.name];
@@ -88,34 +82,27 @@ const Admin = () => {
       };
       updateProduct(updatedProductInfo, admin.id);
 
-      // Optionally, clear the updates for this product after successful update
       const newUpdates = { ...updates };
       delete newUpdates[id];
       setUpdates(newUpdates);
-      // I need to set alert for successful update
-      // Set alert for errors
     }
   };
 
   const handleReset = (index, product) => {
-    // Reset the ref input fields to their original values
     productRefs.current[index].value = priceCentsToDollars(product.priceCents);
     quantityRefs.current[index].value = product.quantity;
 
-    // Clear any updates for this product
     const newUpdates = { ...updates };
     delete newUpdates[product._id];
     setUpdates(newUpdates);
   };
 
   const handleLogoutClick = () => {
-    logout(); // Calling the logout function from your context
-    // You can add more actions here if needed after logging out, like redirecting the user
+    logout();
   };
 
-  const productRefs = useRef([]);
-  const quantityRefs = useRef([]);
   console.log({ quantityRefs: quantityRefs.current[0] });
+
   if (!admin.isAuthenticated) {
     return <Redirect to="/" />;
   }
