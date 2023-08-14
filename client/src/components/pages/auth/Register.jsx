@@ -91,7 +91,6 @@ const Register = () => {
                 placeholder="Password confirmation"
               />
             </Form.Group>
-            {loading && <Spinner />}
             <Button variant="primary" type="submit">
               Submit
             </Button>
