@@ -2,13 +2,13 @@ import React, { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Col, Button, Form, Row } from "react-bootstrap";
 import Spinner from "../../Spinner";
-import background from "../../../img/rope.jpg";
+import background from "../../../img/vending.jpg";
 import RegistrationContext from "../../../context/registration/registrationContext";
 
 const Register = () => {
   const styles = {
     container: {
-      backgroundImage: `url(${background})`,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(${background})`,
       backgroundPosition: "center",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",

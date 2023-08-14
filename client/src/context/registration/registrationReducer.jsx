@@ -11,6 +11,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  PASSWORD_RESET_INITIATE,
+  PASSWORD_RESET_SUCCESS,
+  PASSWORD_RESET_FAIL,
 } from "./types";
 
 const RegistrationReducer = (state, action) => {
@@ -23,9 +26,6 @@ const RegistrationReducer = (state, action) => {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
-      console.log("LOGIN_SUCCESS was hit");
-      console.log("action.payload: ", action.payload);
-      console.log({ state, action });
       return {
         ...state,
         admin: {
@@ -55,8 +55,6 @@ const RegistrationReducer = (state, action) => {
         loading: action.payload,
       };
     case SET_ALERT:
-      console.log("action.payload: ", action.payload);
-      console.log({ state });
       return {
         ...state,
         alert: [...state.alert, action.payload],
@@ -67,8 +65,6 @@ const RegistrationReducer = (state, action) => {
         alert: state.alert.filter((alert) => alert.id !== action.payload),
       };
     case SET_EMAIL:
-      console.log("action.payload in SET EMAIL: ", action.payload);
-      console.log({ state });
       return {
         ...state,
         admin: {
@@ -77,8 +73,6 @@ const RegistrationReducer = (state, action) => {
         },
       };
     case ADMIN_LOADED:
-      console.log("USER_LOADED fired");
-      console.log("action.payload: ", action.payload);
       return {
         ...state,
         admin: {
@@ -86,6 +80,25 @@ const RegistrationReducer = (state, action) => {
           isAuthenticated: true,
           email: action.payload?.email,
           id: action.payload?._id,
+        },
+      };
+    case PASSWORD_RESET_INITIATE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case PASSWORD_RESET_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+    case PASSWORD_RESET_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        admin: {
+          ...state.admin,
+          didResetPassword: true,
         },
       };
 

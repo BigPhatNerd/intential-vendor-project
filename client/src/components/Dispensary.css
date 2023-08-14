@@ -1,0 +1,22 @@
+.dispensary {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dispensary-slot {
+    width: 80%; /* Adjust as needed */
+    height: 50px; /* Adjust based on the expected size of dispensed products */
+    background-color: #ddd; /* Color for the dispensary background */
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Inset shadow for a bit of depth */
+}
+
+.dispensary p {
+    margin-top: 10px;
+    font-size: 14px; 
+    position: relative;
+    z-index: 2;
+}

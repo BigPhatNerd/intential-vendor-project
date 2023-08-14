@@ -1,0 +1,60 @@
+/* PaymentForm.css */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.CardElement {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button[onClick="onCancel"] {
+    background-color: #f44336;
+    color: white;
+}
+
+button[onClick="onCancel"]:hover {
+    background-color: #d32f2f;
+}

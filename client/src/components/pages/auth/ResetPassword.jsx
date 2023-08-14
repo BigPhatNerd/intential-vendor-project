@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useLocation, useHistory } from "react-router-dom";
 import { Container, Row, Button, Form } from "react-bootstrap";
-import background from "../../../img/rope.jpg";
+import background from "../../../img/vending.jpg";
+import RegistrationContext from "../../../context/registration/registrationContext";
 
 const ResetPassword = () => {
+  const registrationContext = useContext(RegistrationContext);
+  const { admin, login, setAlert, handlePasswordReset } = registrationContext;
   const history = useHistory();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,7 +19,7 @@ const ResetPassword = () => {
 
   const styles = {
     container: {
-      backgroundImage: `url(${background})`,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(${background})`,
       backgroundPosition: "center",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
@@ -39,21 +42,26 @@ const ResetPassword = () => {
       return;
     }
 
-    try {
-      const response = await axios.post("/api/auth/reset-password", {
-        token,
-        password,
-      });
-      setMessage(response.data || response.data.message);
-      history.push("/admin");
-    } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data || error.response.data.message);
-      } else {
-        setMessage("An error occurred. Please try again later.");
-      }
-    }
+    handlePasswordReset(token, password);
+    // try {
+    //   const response = await axios.post("/api/auth/reset-password", {
+    //     token,
+    //     password,
+    //   });
+    //   setMessage(response.data || response.data.message);
+    //   history.push("/admin");
+    // } catch (error) {
+    //   if (error.response) {
+    //     setMessage(error.response.data || error.response.data.message);
+    //   } else {
+    //     setMessage("An error occurred. Please try again later.");
+    //   }
+    // }
   };
+
+  if (admin.didResetPassword) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div style={styles.container}>

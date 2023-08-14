@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import { Container, Row, Button, Form } from "react-bootstrap";
-import background from "../../../img/rope.jpg";
+import background from "../../../img/vending.jpg";
+import RegistrationContext from "../../../context/registration/registrationContext";
 
 const ResetPasswordInitiate = () => {
+  const registrationContext = useContext(RegistrationContext);
+  const { admin, login, setAlert, handlePasswordResetInitiate } =
+    registrationContext;
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
   const styles = {
     container: {
-      backgroundImage: `url(${background})`,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(${background})`,
       backgroundPosition: "center",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
@@ -27,21 +31,22 @@ const ResetPasswordInitiate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email });
-    try {
-      const response = await axios.post("/api/auth/reset-password-initiate", {
-        email,
-      });
-      console.log({ response });
-      setMessage(response.data || response.data.message);
-    } catch (error) {
-      console.log({ error });
-      if (error.response) {
-        setMessage(error.response.data || error.response.data.message);
-      } else {
-        setMessage("An error occurred. Please try again later.");
-      }
-    }
+    handlePasswordResetInitiate(email);
+    // console.log({ email });
+    // try {
+    //   const response = await axios.post("/api/auth/reset-password-initiate", {
+    //     email,
+    //   });
+    //   console.log({ response });
+    //   setMessage(response.data || response.data.message);
+    // } catch (error) {
+    //   console.log({ error });
+    //   if (error.response) {
+    //     setMessage(error.response.data || error.response.data.message);
+    //   } else {
+    //     setMessage("An error occurred. Please try again later.");
+    //   }
+    // }
   };
 
   return (

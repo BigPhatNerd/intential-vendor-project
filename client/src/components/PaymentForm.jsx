@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import RegistrationContext from "../context/registration/registrationContext";
 import axios from "axios";
+import "./PaymentForm.css";
 
 const PaymentForm = ({ onPayment, onCancel, amount }) => {
   const registrationContext = useContext(RegistrationContext);
@@ -48,7 +49,7 @@ const PaymentForm = ({ onPayment, onCancel, amount }) => {
 
   return (
     <form onSubmit={handlePaymentSubmit}>
-      <div>
+      <div className="payment-form">
         <label>Email:</label>
         <input
           type="email"

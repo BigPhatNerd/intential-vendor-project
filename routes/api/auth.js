@@ -90,19 +90,40 @@ router.post("/reset-password-initiate", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-  const user = await Admin.findOne({
-    resetPasswordToken: req.body.token,
-    resetPasswordExpires: { $gt: Date.now() },
-  });
+  try {
+    const user = await Admin.findOne({
+      resetPasswordToken: req.body.token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
 
-  if (!user) return res.status(400).send("Invalid or expired token.");
+    if (!user) return res.status(400).send("Invalid or expired token.");
 
-  user.password = req.body.password; // make sure to hash the password before saving
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  await user.save();
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.password, salt);
 
-  res.send("Password reset successful.");
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 3600000 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;

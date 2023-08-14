@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import RegistrationContext from "../../../context/registration/registrationContext";
 import { Container, Row, Button, Form } from "react-bootstrap";
-import background from "../../../img/rope.jpg";
+import background from "../../../img/vending.jpg";
 
 const Login = () => {
   const registrationContext = useContext(RegistrationContext);
@@ -13,7 +13,7 @@ const Login = () => {
   });
   const styles = {
     container: {
-      backgroundImage: `url(${background})`,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(${background})`,
       backgroundPosition: "center",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
@@ -46,7 +46,7 @@ const Login = () => {
   }
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="darkOverlay">
       <Container className="pt-3">
         <Row className="justify-content-center m-2">
           <h1 style={styles.h1}>Sign In </h1>

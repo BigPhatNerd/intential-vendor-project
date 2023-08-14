@@ -3,6 +3,15 @@ import { Link, Redirect } from "react-router-dom";
 import RegistrationContext from "../../context/registration/registrationContext";
 import VendingContext from "../../context/vending/vendingContext";
 import { priceCentsToDollars } from "../../utils/helpers";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 
 const Admin = () => {
   const registrationContext = useContext(RegistrationContext);
@@ -21,6 +30,7 @@ const Admin = () => {
       setUpdates(newUpdates);
       return;
     }
+    console.log({ key, value, priceCents: product.priceCents });
     if (key === "priceCents" && value === product.priceCents) {
       const newUpdates = { ...updates };
       delete newUpdates[id];
@@ -30,6 +40,7 @@ const Admin = () => {
     if (key === "quantity") {
       if (value <= product.quantity) {
         value = product.quantity;
+        console.log({ value, ref: ref });
         setAlert("Cannot remove items from machine", "danger");
         return;
       }
@@ -87,80 +98,105 @@ const Admin = () => {
 
   const productRefs = useRef([]);
   const quantityRefs = useRef([]);
-
+  console.log({ quantityRefs: quantityRefs.current[0] });
   if (!admin.isAuthenticated) {
     return <Redirect to="/" />;
   }
 
   return (
     <>
-      <h2>Admin Dashboard</h2>
-      <div className="products-list">
-        {products.map((product, index) => (
-          <div key={product._id} className="product-item">
-            <h2>{product.name}</h2>
-            {/* Display last updated by email */}
-            {product.lastUpdatedBy && product.lastUpdatedBy.email ? (
-              <div className="updated-by">
-                <span>Last updated by: {product.lastUpdatedBy.email}</span>
-              </div>
-            ) : null}
-            <div>
-              <label>Price ($):</label>
-              <input
-                type="number"
-                step="0.01"
-                ref={(input) => (productRefs.current[index] = input)}
-                defaultValue={priceCentsToDollars(product.priceCents)}
-                onChange={(e) =>
-                  handleChange(
-                    product._id,
-                    "priceCents",
-                    parseFloat(e.target.value) * 100,
-                    productRefs.current[index]
-                  )
-                }
-              />
-            </div>
-            <div>
-              <label>Quantity:</label>
-              <input
-                type="number"
-                step="1"
-                min={product.quantity}
-                max="100"
-                defaultValue={product.quantity}
-                ref={(input) => (quantityRefs.current[index] = input)}
-                onChange={(e) =>
-                  handleChange(
-                    product._id,
-                    "quantity",
-                    parseInt(e.target.value, 10)
-                  )
-                }
-              />
-            </div>
-            {updates[product._id] && (
-              <>
-                <button onClick={() => handleUpdate(product._id)}>
-                  Update
-                </button>
-                <button onClick={() => handleReset(index, product)}>
-                  Reset
-                </button>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-      <button onClick={handleLogoutClick} className="btn btn-danger">
-        Logout
-      </button>
-      <div>
-        <p>
-          Return to the <Link to="/">vending machine</Link>.
-        </p>
-      </div>
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs={12}>
+            <h2>Admin Dashboard</h2>
+            <h4>Max qty is 100 and inventory cannot be reduced</h4>
+          </Col>
+        </Row>
+        <Row>
+          {products.map((product, index) => (
+            <Col md={6} key={product._id}>
+              <Card className="mb-4">
+                <Card.Body>
+                  <Card.Title>{product.name}</Card.Title>
+                  {product.lastUpdatedBy && product.lastUpdatedBy.email ? (
+                    <Card.Subtitle className="mb-2 text-muted">
+                      Last updated by: {product.lastUpdatedBy.email}
+                    </Card.Subtitle>
+                  ) : null}
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text>Price ($):</InputGroup.Text>
+                    <FormControl
+                      type="number"
+                      step="0.01"
+                      ref={(input) => (productRefs.current[index] = input)}
+                      defaultValue={priceCentsToDollars(product.priceCents)}
+                      onChange={(e) =>
+                        handleChange(
+                          product._id,
+                          "priceCents",
+                          parseFloat(e.target.value) * 100,
+                          productRefs.current[index]
+                        )
+                      }
+                    />
+                  </InputGroup>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text>Quantity:</InputGroup.Text>
+                    <FormControl
+                      type="number"
+                      step="1"
+                      min={product.quantity}
+                      max="100"
+                      defaultValue={product.quantity}
+                      ref={(input) => (quantityRefs.current[index] = input)}
+                      onChange={(e) =>
+                        handleChange(
+                          product._id,
+                          "quantity",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      onKeyDown={(e) => e.preventDefault()}
+                      onPaste={(e) => e.preventDefault()}
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                  </InputGroup>
+                  {updates[product._id] && (
+                    <>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleUpdate(product._id)}
+                      >
+                        Update
+                      </Button>{" "}
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleReset(index, product)}
+                      >
+                        Reset
+                      </Button>
+                    </>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        <Row className="justify-content-center">
+          <Col xs={12} md={6} className="text-center">
+            <Button
+              variant="danger"
+              onClick={handleLogoutClick}
+              className="mb-3"
+            >
+              Logout
+            </Button>
+            <p>
+              Return to the <Link to="/">vending machine</Link>.
+            </p>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

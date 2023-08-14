@@ -18,6 +18,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  PASSWORD_RESET_INITIATE,
+  PASSWORD_RESET_SUCCESS,
+  PASSWORD_RESET_FAIL,
 } from "./types";
 
 import setAuthToken from "../../utils/setAuthToken";
@@ -88,8 +91,6 @@ const RegistrationState = (props) => {
 
   //logout admin
   const logout = () => {
-    console.log("Logout being hit!!");
-
     dispatch({ type: LOGOUT });
     window.location.reload(false);
   };
@@ -159,6 +160,46 @@ const RegistrationState = (props) => {
     });
   };
 
+  const handlePasswordResetInitiate = async (email) => {
+    dispatch({ type: PASSWORD_RESET_INITIATE });
+    try {
+      const response = await axios.post("/api/auth/reset-password-initiate", {
+        email,
+      });
+
+      setAlert(response.data || response.data.message);
+    } catch (error) {
+      const errors = error.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => {
+          setAlert(error.msg, "danger");
+        });
+      }
+    }
+  };
+
+  const handlePasswordReset = async (token, password) => {
+    try {
+      const response = await axios.post("/api/auth/reset-password", {
+        token,
+        password,
+      });
+
+      dispatch({
+        type: PASSWORD_RESET_SUCCESS,
+        payload: response.data,
+      });
+      loadAdmin();
+    } catch (error) {
+      const errors = error.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => {
+          setAlert(error.msg, "danger");
+        });
+      }
+    }
+  };
+
   return (
     <RegistrationContext.Provider
       value={{
@@ -175,6 +216,8 @@ const RegistrationState = (props) => {
         login,
         logout,
         loadAdmin,
+        handlePasswordResetInitiate,
+        handlePasswordReset,
       }}
     >
       {props.children}

@@ -25,10 +25,19 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+.darkOverlay {
+  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+}
+
+
+
+* {
+    font-family: 'Oswald', sans-serif;
 }
 
 h1 {

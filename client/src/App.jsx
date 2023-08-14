@@ -1,6 +1,5 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/js/src/collapse.js";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./components/pages/Landing";
 import Routes from "./components/routing/Routes";
