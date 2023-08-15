@@ -26,6 +26,12 @@ const Login = () => {
     p: {
       color: "white",
     },
+    email: {
+      color: "white",
+    },
+    password: {
+      color: "white",
+    },
   };
   const { email, password } = formData;
   const onChange = (e) => {
@@ -54,7 +60,9 @@ const Login = () => {
 
         <Form onSubmit={(e) => onSubmit(e)}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
+            <div style={styles.email}>
+              <Form.Label>Email</Form.Label>
+            </div>
             <Form.Control
               onChange={(e) => onChange(e)}
               value={email}
@@ -64,7 +72,9 @@ const Login = () => {
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <div style={styles.password}>
+              <Form.Label>Password</Form.Label>
+            </div>
             <Form.Control
               onChange={(e) => onChange(e)}
               value={password}

@@ -21,7 +21,7 @@ const ResetPasswordInitiate = () => {
     h1: {
       color: "white",
     },
-    p: {
+    email: {
       color: "white",
     },
   };
@@ -40,7 +40,9 @@ const ResetPasswordInitiate = () => {
 
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
+            <div style={styles.email}>
+              <Form.Label>Email</Form.Label>
+            </div>
             <Form.Control
               type="email"
               value={email}

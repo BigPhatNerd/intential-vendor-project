@@ -84,7 +84,7 @@ ProductSchema.pre("save", function setStockedAndDispensed(next) {
       this.totalDispensed += difference;
     }
   }
-  console.log("validate totalStocked");
+
   next();
 });
 
@@ -92,7 +92,7 @@ ProductSchema.pre("save", function setTotalSales(next) {
   if (this.isModified("totalDispensed")) {
     this.totalSales += this.priceCents;
   }
-  console.log("Validate totalSales");
+
   next();
 });
 

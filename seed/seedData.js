@@ -5,12 +5,14 @@ module.exports = [
       "An effervescent fruity experience with hints of grape and coriander.",
     priceCents: 100,
     quantity: 100,
+    totalStocked: 100,
   },
   {
     name: "Pop",
     description: "An explosion of flavor that will knock your socks off!",
     priceCents: 100,
     quantity: 100,
+    totalStocked: 100,
   },
   {
     name: "Cola",
@@ -18,6 +20,7 @@ module.exports = [
       "A basic no nonsense cola that is the perfect pick me up for any occasion.",
     priceCents: 100,
     quantity: 200,
+    totalStocked: 200,
   },
   {
     name: "Mega Pop",
@@ -25,5 +28,6 @@ module.exports = [
       "Not for the faint of heart.  So flavorful and so invigorating, it should probably be illegal.",
     priceCents: 100,
     quantity: 50,
+    totalStocked: 50,
   },
 ];

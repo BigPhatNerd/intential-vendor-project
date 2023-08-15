@@ -27,7 +27,7 @@ const ResetPassword = () => {
     h1: {
       color: "white",
     },
-    p: {
+    email: {
       color: "white",
     },
   };
@@ -56,7 +56,9 @@ const ResetPassword = () => {
 
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicPassword1">
-            <Form.Label>New Password</Form.Label>
+            <div style={styles.email}>
+              <Form.Label>New Password</Form.Label>
+            </div>
             <Form.Control
               type="password"
               value={password}
@@ -67,7 +69,9 @@ const ResetPassword = () => {
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword2">
-            <Form.Label>Confirm New Password</Form.Label>
+            <div style={styles.email}>
+              <Form.Label>Confirm New Password</Form.Label>
+            </div>
             <Form.Control
               type="password"
               value={confirmPassword}
