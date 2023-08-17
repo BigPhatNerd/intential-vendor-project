@@ -20,6 +20,12 @@ const Register = () => {
     p: {
       color: "white",
     },
+    email: {
+      color: "white",
+    },
+    password: {
+      color: "white",
+    },
   };
   const registrationContext = useContext(RegistrationContext);
   const { admin, register, setAlert, setEmail } = registrationContext;
@@ -56,7 +62,9 @@ const Register = () => {
         <Col>
           <Form onSubmit={(e) => onSubmit(e)}>
             <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <div style={styles.email}>
+                <Form.Label>Email address</Form.Label>
+              </div>
               <Form.Control
                 onChange={(e) => onChange(e)}
                 value={email}
@@ -70,7 +78,9 @@ const Register = () => {
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+              <div style={styles.password}>
+                <Form.Label>Password</Form.Label>
+              </div>
               <Form.Control
                 onChange={(e) => onChange(e)}
                 value={password}
@@ -80,7 +90,9 @@ const Register = () => {
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword2">
-              <Form.Label>Re-enter Password</Form.Label>
+              <div style={styles.password}>
+                <Form.Label>Re-enter Password</Form.Label>
+              </div>
               <Form.Control
                 onChange={(e) => onChange(e)}
                 value={password2}
